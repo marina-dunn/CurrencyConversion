@@ -19,7 +19,7 @@ class App extends React.Component<{}, iState> {
       result: "0",
       fromCountry: "EUR",
       toCountry: "CAD",
-      amount: 0,
+      amount: 1,
       currencies: [],
       countries: {},
       rate: "0"
@@ -78,7 +78,7 @@ class App extends React.Component<{}, iState> {
               <select onChange={event => this.selectHandler(event)} name="srcCountry">
                 {Object.keys(this.state.countries).map((label) => (
                   <option key={label} value={label}>
-                    {label}
+                    {Object.entries(this.state.countries).map(([key, value]) => { if(key === label) return value; return null;})}
                   </option>
                 ))}
               </select>
@@ -88,7 +88,7 @@ class App extends React.Component<{}, iState> {
               <select onChange={event => this.selectHandler(event)} name="destCountry">
                 {Object.keys(this.state.countries).map((label) => (
                   <option key={label} value={label}>
-                    {label}
+                    {Object.entries(this.state.countries).map(([key, value]) => { if(key === label) return value; return null;})}
                   </option>
                 ))}
               </select>
@@ -112,16 +112,3 @@ class App extends React.Component<{}, iState> {
 }
 
 export default App;
-
-/*  const[countries, setCountries] = React.useState([]);
- React.useEffect(() => {
-   async function getCountries() {
-     const response = await fetch("https://cors-anywhere.herokuapp.com/https://dev-apply.educationplannerbc.ca/api/v1/lists/countries");
-     const body = await response.json();
-     setCountries(body.map((description: any) => ({ label: description, value: description })))
-   }
-   getCountries();
- })
-console.log(countries);
-const { useState } = React; */
-  // const onChange = (e: React.ChangeEvent<HTMLInputElement>) => setValue(e.currentTarget.value)

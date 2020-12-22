@@ -47,7 +47,7 @@ var App = /** @class */ (function (_super) {
             result: "0",
             fromCountry: "EUR",
             toCountry: "CAD",
-            amount: 0,
+            amount: 1,
             currencies: [],
             countries: {},
             rate: "0"
@@ -71,11 +71,21 @@ var App = /** @class */ (function (_super) {
                 react_1["default"].createElement("div", { className: "input-holder horizontal-form" },
                     react_1["default"].createElement("div", { className: "countries" },
                         react_1["default"].createElement("label", { htmlFor: "srcCountry" }, "Source Country: "),
-                        react_1["default"].createElement("select", { onChange: function (event) { return _this.selectHandler(event); }, name: "srcCountry" }, Object.keys(this.state.countries).map(function (label) { return (react_1["default"].createElement("option", { key: label, value: label }, label)); })),
+                        react_1["default"].createElement("select", { onChange: function (event) { return _this.selectHandler(event); }, name: "srcCountry" }, Object.keys(this.state.countries).map(function (label) { return (react_1["default"].createElement("option", { key: label, value: label }, Object.entries(_this.state.countries).map(function (_a) {
+                            var key = _a[0], value = _a[1];
+                            if (key === label)
+                                return value;
+                            return null;
+                        }))); })),
                         react_1["default"].createElement("br", null),
                         react_1["default"].createElement("br", null),
                         react_1["default"].createElement("label", { htmlFor: "destCountry" }, "Destination Country: "),
-                        react_1["default"].createElement("select", { onChange: function (event) { return _this.selectHandler(event); }, name: "destCountry" }, Object.keys(this.state.countries).map(function (label) { return (react_1["default"].createElement("option", { key: label, value: label }, label)); })),
+                        react_1["default"].createElement("select", { onChange: function (event) { return _this.selectHandler(event); }, name: "destCountry" }, Object.keys(this.state.countries).map(function (label) { return (react_1["default"].createElement("option", { key: label, value: label }, Object.entries(_this.state.countries).map(function (_a) {
+                            var key = _a[0], value = _a[1];
+                            if (key === label)
+                                return value;
+                            return null;
+                        }))); })),
                         react_1["default"].createElement("br", null),
                         react_1["default"].createElement("br", null),
                         react_1["default"].createElement("label", { htmlFor: "amount" }, "Amount: "),
@@ -90,15 +100,3 @@ var App = /** @class */ (function (_super) {
     return App;
 }(react_1["default"].Component));
 exports["default"] = App;
-/*  const[countries, setCountries] = React.useState([]);
- React.useEffect(() => {
-   async function getCountries() {
-     const response = await fetch("https://cors-anywhere.herokuapp.com/https://dev-apply.educationplannerbc.ca/api/v1/lists/countries");
-     const body = await response.json();
-     setCountries(body.map((description: any) => ({ label: description, value: description })))
-   }
-   getCountries();
- })
-console.log(countries);
-const { useState } = React; */
-// const onChange = (e: React.ChangeEvent<HTMLInputElement>) => setValue(e.currentTarget.value)
