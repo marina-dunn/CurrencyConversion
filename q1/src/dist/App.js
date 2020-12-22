@@ -1,27 +1,104 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 exports.__esModule = true;
 var react_1 = require("react");
-// import logo from './logo.svg';
+var axios_1 = require("axios");
 require("./App.css");
-function App() {
-    var useState = react_1["default"].useState;
-    var _a = useState(""), value = _a[0], setValue = _a[1];
-    // const onChange = (e: React.ChangeEvent<HTMLInputElement>) => setValue(e.currentTarget.value)
-    return (react_1["default"].createElement("div", { className: "App" },
-        react_1["default"].createElement("span", { className: "header-left" },
-            react_1["default"].createElement("header", { className: "App-header" }, "Currency Converter")),
-        react_1["default"].createElement("span", { className: "header-right" },
-            react_1["default"].createElement("div", { className: "input-holder horizontal-form" },
-                react_1["default"].createElement("div", { className: "countries" },
-                    react_1["default"].createElement("label", { htmlFor: "srcCountry" }, "Source Country"),
-                    react_1["default"].createElement("select", { value: value, name: "srcCountry" },
-                        react_1["default"].createElement("option", { value: "cupid" }, "Cupid")),
-                    react_1["default"].createElement("label", { htmlFor: "destCountry" }, "Destination Country"),
-                    react_1["default"].createElement("select", { value: value, name: "destCountry" }),
-                    react_1["default"].createElement("label", { htmlFor: "amount" }, "Amount"),
-                    react_1["default"].createElement("input", { type: "text", id: "amount", name: "amount" })),
-                react_1["default"].createElement("div", { className: "conversion-results" },
-                    react_1["default"].createElement("span", { id: "conversion-factor" }, useState),
-                    react_1["default"].createElement("span", { id: "conversion-result" }, useState))))));
-}
+var App = /** @class */ (function (_super) {
+    __extends(App, _super);
+    function App(props) {
+        var _this = _super.call(this, props) || this;
+        _this.convertHandler = function () {
+            if (_this.state.fromCountry !== _this.state.toCountry) {
+                axios_1["default"]
+                    .get("http://data.fixer.io/api/latest?access_key=108c9ed2d8cd9394698facdf22ac0ede&cbase=" + _this.state.fromCountry + "&symbols=" + _this.state.toCountry)
+                    .then(function (response) {
+                    var result = _this.state.amount * response.data.rates[_this.state.toCountry];
+                    _this.setState({ result: result.toFixed(5), rate: response.data.rates[_this.state.toCountry].toFixed(5) });
+                })["catch"](function (error) {
+                    console.log("Unable to fetch the exchange rate", error.message);
+                });
+            }
+            else {
+                _this.setState({ result: "The countries selected must be different" });
+            }
+        };
+        _this.selectHandler = function (event) {
+            if (event.target.name === "srcCountry") {
+                _this.setState({ fromCountry: event.target.value });
+            }
+            else if (event.target.name === "destCountry") {
+                _this.setState({ toCountry: event.target.value });
+            }
+        };
+        _this.state = {
+            result: "0",
+            fromCountry: "EUR",
+            toCountry: "CAD",
+            amount: 0,
+            currencies: [],
+            countries: {},
+            rate: "0"
+        };
+        return _this;
+    }
+    App.prototype.componentDidMount = function () {
+        var _this = this;
+        axios_1["default"]
+            .get("http://data.fixer.io/api/symbols?access_key=108c9ed2d8cd9394698facdf22ac0ede")
+            .then(function (response) {
+            _this.setState({ countries: response.data.symbols });
+        })["catch"](function (err) { console.log("Countries could not be fetched", err); });
+    };
+    App.prototype.render = function () {
+        var _this = this;
+        return (react_1["default"].createElement("div", { className: "App" },
+            react_1["default"].createElement("div", { className: "header-left box" },
+                react_1["default"].createElement("header", { className: "App-header" }, "Currency Converter")),
+            react_1["default"].createElement("div", { className: "header-right box" },
+                react_1["default"].createElement("div", { className: "input-holder horizontal-form" },
+                    react_1["default"].createElement("div", { className: "countries" },
+                        react_1["default"].createElement("label", { htmlFor: "srcCountry" }, "Source Country: "),
+                        react_1["default"].createElement("select", { onChange: function (event) { return _this.selectHandler(event); }, name: "srcCountry" }, Object.keys(this.state.countries).map(function (label) { return (react_1["default"].createElement("option", { key: label, value: label }, label)); })),
+                        react_1["default"].createElement("br", null),
+                        react_1["default"].createElement("br", null),
+                        react_1["default"].createElement("label", { htmlFor: "destCountry" }, "Destination Country: "),
+                        react_1["default"].createElement("select", { onChange: function (event) { return _this.selectHandler(event); }, name: "destCountry" }, Object.keys(this.state.countries).map(function (label) { return (react_1["default"].createElement("option", { key: label, value: label }, label)); })),
+                        react_1["default"].createElement("br", null),
+                        react_1["default"].createElement("br", null),
+                        react_1["default"].createElement("label", { htmlFor: "amount" }, "Amount: "),
+                        react_1["default"].createElement("input", { type: "text", id: "amount", name: "amount", value: this.state.amount, onChange: function (e) { return _this.setState({ amount: +e.currentTarget.value }); } }),
+                        react_1["default"].createElement("button", { onClick: this.convertHandler }, "Convert")),
+                    react_1["default"].createElement("div", { className: "conversion-results" },
+                        react_1["default"].createElement("span", { id: "conversion-factor" }, this.state.rate),
+                        react_1["default"].createElement("br", null),
+                        react_1["default"].createElement("br", null),
+                        react_1["default"].createElement("span", { id: "conversion-result" }, this.state.result))))));
+    };
+    return App;
+}(react_1["default"].Component));
 exports["default"] = App;
+/*  const[countries, setCountries] = React.useState([]);
+ React.useEffect(() => {
+   async function getCountries() {
+     const response = await fetch("https://cors-anywhere.herokuapp.com/https://dev-apply.educationplannerbc.ca/api/v1/lists/countries");
+     const body = await response.json();
+     setCountries(body.map((description: any) => ({ label: description, value: description })))
+   }
+   getCountries();
+ })
+console.log(countries);
+const { useState } = React; */
+// const onChange = (e: React.ChangeEvent<HTMLInputElement>) => setValue(e.currentTarget.value)
