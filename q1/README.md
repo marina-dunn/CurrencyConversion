@@ -22,3 +22,9 @@ It correctly bundles React in production mode and optimizes the build for the be
 
 The build is minified and the filenames include the hashes.\
 Your app is ready to be deployed!
+
+To deploy it to a static server, use the command 
+
+`npm install -g serve` to install your own static server. 
+
+Then to launch, use the command `serve -s build` and navigate to [http://localhost:5000](http://localhost:5000) in a browser.

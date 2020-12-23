@@ -56,7 +56,11 @@ class App extends React.Component<{}, iState> {
 
   selectHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
     if (event.target.name === "srcCountry") {
-      this.setState({ fromCountry: event.target.value });
+      if (this.state.fromCountry !== 'EUR') {
+        alert("Unfortunately, we can only convert from Euros at this point.");
+        this.setState({ fromCountry: 'EUR' });
+      }
+      this.setState({ fromCountry: 'EUR' });
     }
     else if (event.target.name === "destCountry") {
       this.setState({ toCountry: event.target.value });
@@ -76,9 +80,12 @@ class App extends React.Component<{}, iState> {
             <div className="countries">
               <label htmlFor="srcCountry">Source Country: </label>
               <select onChange={event => this.selectHandler(event)} name="srcCountry">
+                <option key="EUR" value="EUR">
+                  Euro
+                </option>
                 {Object.keys(this.state.countries).map((label) => (
-                  <option key={label} value={label}>
-                    {Object.entries(this.state.countries).map(([key, value]) => { if(key === label) return value; return null;})}
+                  <option key={label} value={label} disabled>
+                    {Object.entries(this.state.countries).map(([key, value]) => { if (key === label) return value; return null; })}
                   </option>
                 ))}
               </select>
@@ -88,7 +95,7 @@ class App extends React.Component<{}, iState> {
               <select onChange={event => this.selectHandler(event)} name="destCountry">
                 {Object.keys(this.state.countries).map((label) => (
                   <option key={label} value={label}>
-                    {Object.entries(this.state.countries).map(([key, value]) => { if(key === label) return value; return null;})}
+                    {Object.entries(this.state.countries).map(([key, value]) => { if (key === label) return value; return null; })}
                   </option>
                 ))}
               </select>
@@ -99,9 +106,11 @@ class App extends React.Component<{}, iState> {
               <button onClick={this.convertHandler}>Convert</button>
             </div>
             <div className="conversion-results">
+              <h3>Conversion Rate: </h3>
               <span id="conversion-factor">{this.state.rate}</span>
               <br />
               <br />
+              <h3>Conversion Result: </h3>
               <span id="conversion-result">{this.state.result}</span>
             </div>
           </div>
