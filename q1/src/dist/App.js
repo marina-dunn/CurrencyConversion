@@ -16,10 +16,12 @@ exports.__esModule = true;
 var react_1 = require("react");
 var axios_1 = require("axios");
 require("./App.css");
+var coins_gif_1 = require("./coins.gif");
 var App = /** @class */ (function (_super) {
     __extends(App, _super);
     function App(props) {
         var _this = _super.call(this, props) || this;
+        // When convert is pressed, this sends the get request to fixer.io to get the conversion rates and calculates the converted amount
         _this.convertHandler = function () {
             if (_this.state.fromCountry !== _this.state.toCountry) {
                 axios_1["default"]
@@ -35,6 +37,7 @@ var App = /** @class */ (function (_super) {
                 _this.setState({ result: "The countries selected must be different" });
             }
         };
+        // When a dropdown is selected this will change the associated state (not for the source country due to fixer.io limitations)
         _this.selectHandler = function (event) {
             if (event.target.name === "srcCountry") {
                 if (_this.state.fromCountry !== 'EUR') {
@@ -58,6 +61,7 @@ var App = /** @class */ (function (_super) {
         };
         return _this;
     }
+    // Fetch the currency values and associated country names from fixer.io
     App.prototype.componentDidMount = function () {
         var _this = this;
         axios_1["default"]
@@ -66,11 +70,14 @@ var App = /** @class */ (function (_super) {
             _this.setState({ countries: response.data.symbols });
         })["catch"](function (err) { console.log("Countries could not be fetched", err); });
     };
+    // UI Rendering
     App.prototype.render = function () {
         var _this = this;
         return (react_1["default"].createElement("div", { className: "App" },
             react_1["default"].createElement("div", { className: "header-left box" },
-                react_1["default"].createElement("header", { className: "App-header" }, "Currency Converter")),
+                react_1["default"].createElement("header", { className: "App-header" },
+                    "Currency Converter",
+                    react_1["default"].createElement("img", { src: coins_gif_1["default"], width: "300px", alt: "Coins" }))),
             react_1["default"].createElement("div", { className: "header-right box" },
                 react_1["default"].createElement("div", { className: "input-holder horizontal-form" },
                     react_1["default"].createElement("div", { className: "countries" },

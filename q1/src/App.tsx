@@ -1,7 +1,9 @@
 import React from 'react';
 import axios from "axios";
 import './App.css';
+import coins from './coins.gif';
 
+// Set types for state
 interface iState {
   result: string,
   fromCountry: string,
@@ -26,6 +28,7 @@ class App extends React.Component<{}, iState> {
     };
   }
 
+  // Fetch the currency values and associated country names from fixer.io
   componentDidMount() {
     axios
       .get("http://data.fixer.io/api/symbols?access_key=108c9ed2d8cd9394698facdf22ac0ede")
@@ -35,6 +38,7 @@ class App extends React.Component<{}, iState> {
       .catch(err => { console.log("Countries could not be fetched", err); });
   }
 
+  // When convert is pressed, this sends the get request to fixer.io to get the conversion rates and calculates the converted amount
   convertHandler = () => {
     if (this.state.fromCountry !== this.state.toCountry) {
       axios
@@ -54,6 +58,7 @@ class App extends React.Component<{}, iState> {
     }
   };
 
+  // When a dropdown is selected this will change the associated state (not for the source country due to fixer.io limitations)
   selectHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
     if (event.target.name === "srcCountry") {
       if (this.state.fromCountry !== 'EUR') {
@@ -67,12 +72,14 @@ class App extends React.Component<{}, iState> {
     }
   }
 
+  // UI Rendering
   render() {
     return (
       <div className="App">
         <div className="header-left box">
           <header className="App-header">
             Currency Converter
+        <img src={coins} width="300px" alt="Coins" />
         </header>
         </div>
         <div className="header-right box">

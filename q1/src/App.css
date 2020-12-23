@@ -11,7 +11,8 @@
 }
 
 .header-left {
-  padding-top: 35vh;
+  text-align: center;
+  padding-top: 14vh;
   background-color: #282c34;
   align-items: center;
   justify-content: center;
@@ -32,7 +33,11 @@
 }
 
 h3{
-  font-size: calc(10px + 1vmin);
+  font-size: calc(10px + 1.5vmin);
+}
+
+.conversion-results{
+  text-align: center;
 }
 
 #conversion-factor{
@@ -40,6 +45,7 @@ h3{
   background-color: #ccc;
   border: 2px solid #aaa;
   border-radius: 10%;
+  align-self: center;
 }
 
 #conversion-result{
