@@ -1,3 +1,9 @@
+# Roadmap
+
+Question 1 can be found in the q1 directory, q2 is the JavaScript file in the root directory. 
+
+There is an Assumptions file in the root directory that outlines what assumptions were made during the process of completing both questions.
+
 ## Running Q1
 To run q1, Node and npm are required. 
 
@@ -9,6 +15,13 @@ Then to start the dev server, run `npm start` and open [http://localhost:3000](h
 
 Alternatively, to have the application running in production, run the following commands: 
 
+`npm run build`
+
+`npm install -g serve`
+
+`serve -s build`
+
+Then open in a Chrome-based browser and view at [http://localhost:5000](http://localhost:5000).
 
 
 
